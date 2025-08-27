@@ -103,5 +103,6 @@ echo '
 
 
 
+include 'footer.php';
 
 ?>

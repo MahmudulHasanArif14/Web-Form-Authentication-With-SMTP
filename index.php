@@ -4,7 +4,7 @@
 
 echo '
 <!-- Hero Section -->
-<section class="bg-light py-5 text-center align-content-center">
+<section class="py-5 text-center align-content-center">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -21,5 +21,8 @@ echo '
 </section> ';
 
     
+
+
+include 'footer.php';
 
 ?>

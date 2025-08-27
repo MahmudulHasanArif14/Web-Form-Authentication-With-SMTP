@@ -1,5 +1,6 @@
 <?php
 require 'sendmail.php';
+include 'connection.php';
 
 if (isset($_POST['submit'])) {
 
@@ -56,11 +57,11 @@ if (isset($_POST['submit'])) {
     $selectQuery = "SELECT * FROM `userinfoh` WHERE `email`='$email' ";
 
     // run the select Query
-    $result = mysqli_query($conn, $selectQuery);
+    $result = mysqli_query($con, $selectQuery);
 
 
     // if true then email exist so check status
-    
+
     if (mysqli_num_rows($result) > 0) {
 
         $row = mysqli_fetch_assoc($result);
@@ -73,7 +74,7 @@ if (isset($_POST['submit'])) {
 
             $updateQuery = "UPDATE `userinfoh` SET `otp`='$otp_code', `activate_code`='$activate_code' WHERE `email`='$email'";
 
-            $runQuery = mysqli_query($conn, $updateQuery);
+            $runQuery = mysqli_query($con, $updateQuery);
 
             if ($runQuery) {
                 $subject = 'Your OTP Code from Website';
@@ -84,7 +85,7 @@ if (isset($_POST['submit'])) {
                     session_start();
                     $_SESSION['otp'] = $otp_code;
                     $_SESSION['email'] = $email;
-                    header("Location: otp_page.php");
+                    header("Location: otp_page.php?activate_code=" . urlencode($activate_code));
                     exit;
                 } else {
                     header("Location: register.php?error=" . urlencode($result));
@@ -97,64 +98,37 @@ if (isset($_POST['submit'])) {
         }
     }
 
+    // if user email not exists create new user
+    else {
 
 
+        // insert Query
+      $insertQuery = "INSERT INTO `userinfoh`(`name`, `email`, `password`, `otp`, `activate_code`, `Status`) 
+                VALUES ('$name','$email','$password','$otp_code','$activate_code','inactive')";
 
 
+        if (mysqli_query($con, $insertQuery)) {
 
+            $subject = 'Your OTP Code from Website';
+            $body = "<b>Your OTP code is: $otp_code</b>";
+            $result = sendMail($email, $subject, $body);
 
-
-
-
-
-
-
-
-
-    // insert Query
-    $insertQuery = "INSERT INTO `userinfoh`(`name`, `email`, `password`, `otp`, `activate_code`, `Status`,) VALUES ('$name','$email','$password','$otp_code','$activate_code','inactive')";
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-    if (mysqli_query($conn, $insertQuery)) {
-
-
-        $subject = 'Your OTP Code from Website';
-        $body = "<b>Your OTP code is: $otp_code</b>";
-        $result = sendMail($email, $subject, $body);
-
-        if ($result == true) {
-            session_start();
-            $_SESSION['otp'] = $otp_code;
-            $_SESSION['email'] = $email;
-            header("Location: otp_page.php");
-            exit;
-        } else {
-            
+            if ($result == true) {
+                session_start();
+                $_SESSION['otp'] = $otp_code;
+                $_SESSION['email'] = $email;
+                header("Location: otp_page.php?activate_code=" . urlencode($activate_code));
+                exit;
+            } else {
                 header("Location: register.php?error=" . urlencode($result));
                 exit;
+            }
+        } else {
+            header("Location: register.php?error=" . urlencode("Database error: " . mysqli_error($conn)));
+            exit;
         }
-    } else {
-        header("Location: register.php?error=" . urlencode("Database error: " . mysqli_error($conn)));
-        exit;
     }
-}
-
-
-
-
-else {
+} else {
     header("Location: register.php?error=" . urlencode("Don't try to access from URL"));
     exit;
 }

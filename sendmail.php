@@ -10,7 +10,7 @@ function sendMail($recipient, $subject, $body) {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'cse_0182220012101050@lus.ac.bd';
-        $mail->Password   = 'mqio ucmk lcsa pggo';
+        $mail->Password   = '';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 

@@ -45,6 +45,7 @@ A secure PHP web form authentication system using SMTP email verification. Users
 
 1. Clone this repository:
    ```bash
-   git clone [https://github.com/yourusername/your-repo.git](https://github.com/MahmudulHasanArif14/Web-Form-Authentication-With-SMTP.git)
+   git clone https://github.com/MahmudulHasanArif14/Web-Form-Authentication-With-SMTP.git
    composer install
+
 

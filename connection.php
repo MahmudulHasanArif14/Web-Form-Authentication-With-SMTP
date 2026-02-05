@@ -1,10 +1,10 @@
 <?php
 
-$host = $_ENV['DB_HOST'];
-$db   = $_ENV['DB_NAME'];
-$user = $_ENV['DB_USERNAME'];
-$pass = $_ENV['DB_PASSWORD'];
-$port = $_ENV['DB_PORT'];
+$host = getenv('DB_HOST') ?: 'localhost';
+$dbname = getenv('DB_NAME') ?: 'mydb';
+$user = getenv('DB_USERNAME') ?: 'root';
+$pass = getenv('DB_PASSWORD') ?: '';
+$port = getenv('DB_PORT') ?: 3306;
 
 $con = new mysqli($host, $user, $pass, $db, $port);
 
